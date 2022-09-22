@@ -19,6 +19,17 @@ function App() {
 		return newDie;
 	};
 
+	const compareFunction = (a, b) => {
+		if (a.time < b.time) {
+			return -1;
+		}
+		if (a.time > b.time) {
+			return 1;
+		}
+
+		return 0;
+	};
+
 	let isInitialMount = useRef(true);
 	let intervalId = useRef("");
 	let defaultData = {
@@ -37,6 +48,7 @@ function App() {
 	const [viewInfo, setViewInfo] = useState(false);
 	const [tenzies, setTenzies] = useState(true);
 	const [won, setWon] = useState(false);
+	const [dieStyle, setDieStyle] = useState(true);
 
 	const [die, setDie] = useState(allNewDie);
 
@@ -72,7 +84,12 @@ function App() {
 	}, [die]);
 
 	useEffect(() => {
-		localStorage.setItem("record", JSON.stringify(users));
+		localStorage.setItem(
+			"record",
+			JSON.stringify(users.sort(compareFunction).slice(0, 20))
+		);
+
+		setUsers(JSON.parse(localStorage.getItem("record")));
 	}, [users]);
 
 	const rollDie = () => {
@@ -117,11 +134,15 @@ function App() {
 			if (isUserNameAvailable) {
 				alert("User Exists");
 			} else {
-				setUsers((prevState) => {
-					return [...prevState, player];
-				});
-				setPlayer(defaultData);
-				setTimer(0);
+				if (player.rolls < 1 || player.time < 1) {
+					alert("Invalid Game session, Please start a new game");
+				} else {
+					setUsers((prevState) => {
+						return [...prevState, player];
+					});
+					setPlayer(defaultData);
+					setTimer(0);
+				}
 			}
 		} else {
 			alert("Enter username to save");
@@ -140,7 +161,7 @@ function App() {
 	};
 
 	return (
-		<main className="w-screen h-screen overflow-y-scroll sm:h-screen sm:flex xl:space-x-5 p-8 bg-gray-100 text-gray-600 sm:justify-center relative ">
+		<main className="w-screen select-none h-screen overflow-y-scroll sm:h-screen sm:flex xl:space-x-5 p-8 bg-gray-100 text-gray-600 sm:justify-center relative ">
 			<section className=" w-screen h-auto flex xl:flex-none xl:w-1/5 xl:h-full absolute top-0 left-0 xl:relative ">
 				<div
 					className={
@@ -166,16 +187,25 @@ function App() {
 				</div>
 			</section>
 			<section className=" w-full h-full sm:h-full sm:w-2/3 xl:w-3/5 sm:border-[10px] xl:border-[20px] sm:border-solid sm:flex sm:flex-col justify-center items-center sm:border-slate-700 relative ">
-				<div className=" h-1/5 xl:h-1/3 w-full text-center  py-5 ">
-					<h1 className=" font-extrabold sm:text-xl m-auto xl:w-[80%] xl:text-2xl text-gray-700 tracking-wider ">
-						Tenzies
+				<div className=" h-1/5 xl:h-1/3 w-full text-center ">
+					<h1 className=" group font-extrabold sm:text-xl m-auto xl:w-[80%] xl:text-2xl text-gray-700 tracking-wider ">
+						<label className=" text-[9px] tracking-normal group-hover:visible invisible ">
+							Click on Tenzies to switch between dice style (Dots/Number)
+						</label>
+						<br />
+						<label
+							className="w-auto cursor-pointer "
+							onClick={() => setDieStyle((prevState) => !prevState)}
+						>
+							Tenzies
+						</label>
 					</h1>
 					<p className=" sm:text-base m-auto xl:w-[80%] xl:pt-4 xl:text-lg ">
 						Roll until all dice are the same. Click each die to freeze it at its
 						current value between rolls
 					</p>
 				</div>
-				<div className=" w-full h-3/5 xl:h-2/3 flex justify-center items-center">
+				<div className=" w-full h-3/5 xl:h-2/3 flex justify-center items-center mt-16 xl:mt-0 ">
 					<div
 						className={
 							tenzies
@@ -236,13 +266,14 @@ function App() {
 									key={index}
 									value={dice.value}
 									isHeld={dice.isHeld}
+									style={dieStyle}
 									clickHandler={() => heldDice(index)}
 								/>
 							))
 						)}
 					</div>
 				</div>
-				<div className="w-full h-1/5 flex justify-center items-center -mt-6 ">
+				<div className="w-full h-1/5 flex justify-center items-center -mt-12 ">
 					{
 						<button
 							className=" visible w-[100px] h-[45px] xl:h-[70px] bg-indigo-700  shadow-md rounded-md text-slate-50 "

@@ -3,18 +3,6 @@ import { useState } from "react";
 function HighScore(props) {
 	const [toggleHighScore, setToggleHighScore] = useState(false);
 
-	const compareFunction = (a, b) => {
-		if (a.time < b.time) {
-			return -1;
-		}
-		if (a.time > b.time) {
-			return 1;
-		}
-
-		return 0;
-	};
-	let users = props.users.sort(compareFunction);
-
 	return (
 		<div className=" w-full h-full relative text-center ">
 			<h2
@@ -38,7 +26,7 @@ function HighScore(props) {
 					<h1>Rolls</h1>
 					<h1>Time</h1>
 				</div>
-				{users.map((user, index) => {
+				{props.users.map((user, index) => {
 					return (
 						<div key={user.id} className="grid grid-cols-4">
 							<p className="font-bold">{index + 1}</p>
