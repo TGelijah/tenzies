@@ -187,6 +187,15 @@ function App() {
           </p>
           <p className=" w-auto h-auto ">Total Rolls:{"\t" + player.rolls}</p>
         </div>
+        <div className=" w-[150px] h-1/6 text-center text-sm absolute bottom-10 right-4 bg-[rgba(234,234,203,0.5)] text-red-600 shadow-xl font-bold tracking-wide hover:scale-105 hover:shadow-slate-500 hidden xl:flex items-center ">
+          <a
+            href="https://github.com/glorious-elijah/quiz.ly/issues"
+            target="_blank"
+            rel="noreferrer"
+          >
+            👍🏾 make a feature 💡 or report 🪲!
+          </a>
+        </div>
       </section>
       <section className=" w-full h-full sm:h-full sm:w-2/3 xl:w-3/5 sm:border-[10px] xl:border-[20px] sm:border-solid sm:flex sm:flex-col justify-center items-center sm:border-slate-700 relative ">
         <div className=" h-1/5 xl:h-1/3 w-full text-center ">
