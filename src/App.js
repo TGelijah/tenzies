@@ -90,8 +90,6 @@ function App() {
       "record",
       JSON.stringify(users.sort(compareFunction).slice(0, 20))
     );
-
-    setUsers(JSON.parse(localStorage.getItem("record")));
   }, [users]);
 
   const rollDie = () => {
