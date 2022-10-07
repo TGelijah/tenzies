@@ -76,14 +76,15 @@ function App() {
     if (held && value) {
       setTenzies(true);
       setWon(true);
+      clearInterval(intervalId.current);
       setPlayer((prevState) => {
         return {
           ...prevState,
-          time: timer,
+          time: timer, //BUG adds one more second after completion
         };
       });
     }
-  }, [die]);
+  }, [die, timer]);
 
   useEffect(() => {
     localStorage.setItem(
